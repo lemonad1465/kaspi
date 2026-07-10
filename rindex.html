@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Kaspi.kz - Реквизиты</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+    <link rel="apple-touch-icon" href="icon.svg"/>
+    <link rel="icon" href="icon.svg"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Kaspi.kz">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="sindex.css" />
+    <link rel="stylesheet" href="rindex.css" />
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="flex-row-a">
+        <a href="mindex.html" class="chevron-left"><div class="vector"></div></a>
+        <div class="my-bank">
+          <span class="udostoverenie">Удостоверение личности</span>
+        </div>
+      </div>
+      
+      <div class="slider">
+        <div class="rectangle"></div>
+        <a href="sindex.html" class="tab-link-docs">Документы</a>
+        <div class="button-rectangle-reqs"></div>
+        <div class="tab-text-reqs">Реквизиты</div>
+      </div>
+      
+      <div class="requisites-container">
+        <!-- Requisites card list with editable input fields -->
+        <div class="req-item">
+          <div class="req-label">Фамилия, имя, отчество</div>
+          <div class="req-value-container">
+            <input type="text" class="req-input" id="val-fio" value="АЛИБИЕВ АЛИБИ АЛИБИЕВИЧ" oninput="saveField('fio', this.value)" />
+            <button class="btn-copy-icon" onclick="copyText('val-fio', this)" aria-label="Копировать ФИО">
+              <svg class="icon-copy" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fe3420" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <svg class="icon-checked" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34c759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="req-item">
+          <div class="req-label">ИИН</div>
+          <div class="req-value-container">
+            <input type="text" class="req-input" id="val-iin" value="990101300999" oninput="saveField('iin', this.value)" />
+            <button class="btn-copy-icon" onclick="copyText('val-iin', this)" aria-label="Копировать ИИН">
+              <svg class="icon-copy" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fe3420" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <svg class="icon-checked" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34c759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="req-item">
+          <div class="req-label">Номер документа</div>
+          <div class="req-value-container">
+            <input type="text" class="req-input" id="val-docnum" value="045678901" oninput="saveField('docnum', this.value)" />
+            <button class="btn-copy-icon" onclick="copyText('val-docnum', this)" aria-label="Копировать номер документа">
+              <svg class="icon-copy" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fe3420" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <svg class="icon-checked" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34c759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="req-item">
+          <div class="req-label">Дата выдачи</div>
+          <div class="req-value-container">
+            <input type="text" class="req-input" id="val-issue" value="15.05.2020" oninput="saveField('issue', this.value)" />
+            <button class="btn-copy-icon" onclick="copyText('val-issue', this)" aria-label="Копировать дату выдачи">
+              <svg class="icon-copy" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fe3420" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <svg class="icon-checked" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34c759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="req-item">
+          <div class="req-label">Срок действия</div>
+          <div class="req-value-container">
+            <input type="text" class="req-input" id="val-expiry" value="14.05.2030" oninput="saveField('expiry', this.value)" />
+            <button class="btn-copy-icon" onclick="copyText('val-expiry', this)" aria-label="Копировать срок действия">
+              <svg class="icon-copy" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fe3420" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <svg class="icon-checked" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34c759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="req-item">
+          <div class="req-label">Орган выдачи</div>
+          <div class="req-value-container">
+            <input type="text" class="req-input" id="val-authority" value="МВД РК" oninput="saveField('authority', this.value)" />
+            <button class="btn-copy-icon" onclick="copyText('val-authority', this)" aria-label="Копировать орган выдачи">
+              <svg class="icon-copy" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fe3420" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <svg class="icon-checked" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34c759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bottom-actions">
+        <div class="share-btn-container">
+          <button class="btn-share" onclick="shareRequisites()">Отправить реквизиты</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="toast" class="toast">Скопировано в буфер обмена</div>
+
+    <script>
+      // Load saved values from LocalStorage on page load
+      const fields = ['fio', 'iin', 'docnum', 'issue', 'expiry', 'authority'];
+      document.addEventListener('DOMContentLoaded', () => {
+        fields.forEach(field => {
+          const saved = localStorage.getItem('req_' + field);
+          if (saved !== null) {
+            document.getElementById('val-' + field).value = saved;
+          }
+        });
+      });
+
+      // Save field value to LocalStorage
+      function saveField(key, value) {
+        localStorage.setItem('req_' + key, value);
+      }
+
+      // Copy text to clipboard and show feedback
+      function copyText(elementId, btn) {
+        const inputElement = document.getElementById(elementId);
+        const text = inputElement.value;
+        
+        navigator.clipboard.writeText(text).then(() => {
+          // Show toast
+          const toast = document.getElementById('toast');
+          toast.textContent = 'Скопировано в буфер обмена';
+          toast.classList.add('show');
+          
+          // Toggle icon state in copy button
+          const iconCopy = btn.querySelector('.icon-copy');
+          const iconChecked = btn.querySelector('.icon-checked');
+          
+          iconCopy.style.display = 'none';
+          iconChecked.style.display = 'block';
+          
+          setTimeout(() => {
+            toast.classList.remove('show');
+            iconCopy.style.display = 'block';
+            iconChecked.style.display = 'none';
+          }, 1500);
+        }).catch(err => {
+          console.error('Ошибка копирования: ', err);
+        });
+      }
+
+      // Share requisites or copy all to clipboard
+      function shareRequisites() {
+        const fio = document.getElementById('val-fio').value;
+        const iin = document.getElementById('val-iin').value;
+        const docnum = document.getElementById('val-docnum').value;
+        const issue = document.getElementById('val-issue').value;
+        const expiry = document.getElementById('val-expiry').value;
+        const authority = document.getElementById('val-authority').value;
+        
+        const shareText = `Реквизиты удостоверения личности:\n` +
+                          `ФИО: ${fio}\n` +
+                          `ИИН: ${iin}\n` +
+                          `Номер документа: ${docnum}\n` +
+                          `Дата выдачи: ${issue}\n` +
+                          `Срок действия: ${expiry}\n` +
+                          `Орган выдачи: ${authority}`;
+        
+        if (navigator.share) {
+          navigator.share({
+            title: 'Реквизиты удостоверения личности',
+            text: shareText
+          }).catch(err => console.log(err));
+        } else {
+          navigator.clipboard.writeText(shareText).then(() => {
+            const toast = document.getElementById('toast');
+            toast.textContent = 'Все реквизиты скопированы для отправки';
+            toast.classList.add('show');
+            setTimeout(() => {
+              toast.classList.remove('show');
+            }, 2000);
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

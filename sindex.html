@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title>Kaspi.kz</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" />
+    <link rel="apple-touch-icon" href="icon.svg"/>
+    <link rel="icon" href="icon.svg"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Kaspi.kz">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="sindex.css" />
+  </head>
+  <script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+      const fileInput = document.getElementById('img-upl');
+      const imgPreview = document.querySelector('.idimg');
+      const uploadLabel = document.getElementById('upload-label');
+      const presentButton = document.querySelector('.present');
+      const qrOverlay = document.getElementById('qr-modal');
+      const qrClose = document.querySelector('.qr-close');
+      const qrImage = document.getElementById('qr-image');
+      const qrCodeValue = document.querySelector('.qr-code-value');
+      const qrLoading = document.getElementById('qr-loading');
+
+      // ===== Responsive Zoom + Pan (Pure JS - Mobile & Desktop) =====
+      const container = document.getElementById('img-container');
+
+      let scale = 1;
+      let posX = 0, posY = 0;
+      
+      let isDragging = false;
+      let startX = 0, startY = 0;
+      
+      let touchStartDist = 0;
+      let initialScale = 1;
+      let isPinching = false;
+      let lastTapTime = 0;
+
+      function updateTransform() {
+        imgPreview.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+      }
+
+      function resetTransformSmooth() {
+        imgPreview.style.transition = 'transform 0.25s ease-out';
+        scale = 1;
+        posX = 0;
+        posY = 0;
+        updateTransform();
+        setTimeout(() => {
+          imgPreview.style.transition = '';
+        }, 250);
+      }
+
+      // Reset on file upload
+      fileInput.addEventListener('change', function () {
+        scale = 1;
+        posX = 0;
+        posY = 0;
+        updateTransform();
+      });
+
+      // Desktop: Wheel Zoom
+      container.addEventListener('wheel', (e) => {
+        if (imgPreview.style.display === 'none') return;
+        e.preventDefault();
+        
+        const zoomFactor = 0.15;
+        let newScale = scale + (e.deltaY < 0 ? zoomFactor : -zoomFactor);
+        scale = Math.min(4, Math.max(1, newScale));
+        
+        if (scale === 1) {
+          posX = 0;
+          posY = 0;
+        }
+        updateTransform();
+      }, { passive: false });
+
+      // Desktop: Drag Pan (MouseDown / MouseMove / MouseUp)
+      container.addEventListener('mousedown', (e) => {
+        if (imgPreview.style.display === 'none') return;
+        if (scale <= 1) return; // Drag only when zoomed in
+        e.preventDefault();
+        isDragging = true;
+        startX = e.clientX - posX;
+        startY = e.clientY - posY;
+        imgPreview.style.cursor = 'grabbing';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        posX = e.clientX - startX;
+        posY = e.clientY - startY;
+        updateTransform();
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          imgPreview.style.cursor = 'zoom-in';
+        }
+      });
+
+      // Mobile: Touch Pan + Pinch Zoom + Double Tap
+      container.addEventListener('touchstart', (e) => {
+        if (imgPreview.style.display === 'none') return;
+        
+        // Double tap detection
+        if (e.touches.length === 1) {
+          const now = new Date().getTime();
+          const timespan = now - lastTapTime;
+          if (timespan < 300 && timespan > 0) {
+            e.preventDefault();
+            if (scale > 1) {
+              resetTransformSmooth();
+            } else {
+              imgPreview.style.transition = 'transform 0.25s ease-out';
+              scale = 2.5;
+              posX = 0;
+              posY = 0;
+              updateTransform();
+              setTimeout(() => {
+                imgPreview.style.transition = '';
+              }, 250);
+            }
+            lastTapTime = 0;
+            return;
+          }
+          lastTapTime = now;
+          
+          // Single touch pan start
+          isDragging = true;
+          startX = e.touches[0].clientX - posX;
+          startY = e.touches[0].clientY - posY;
+        } else if (e.touches.length === 2) {
+          // Pinch zoom start
+          isDragging = false;
+          isPinching = true;
+          initialScale = scale;
+          touchStartDist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+        }
+      });
+
+      container.addEventListener('touchmove', (e) => {
+        if (imgPreview.style.display === 'none') return;
+        
+        if (e.touches.length === 1 && isDragging && scale > 1) {
+          e.preventDefault(); // Prevent scrolling screen while panning
+          posX = e.touches[0].clientX - startX;
+          posY = e.touches[0].clientY - startY;
+          updateTransform();
+        } else if (e.touches.length === 2 && isPinching) {
+          e.preventDefault();
+          const dist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          if (touchStartDist > 0) {
+            scale = Math.min(4, Math.max(1, initialScale * (dist / touchStartDist)));
+            if (scale === 1) {
+              posX = 0;
+              posY = 0;
+            }
+            updateTransform();
+          }
+        }
+      }, { passive: false });
+
+      container.addEventListener('touchend', () => {
+        isDragging = false;
+        isPinching = false;
+        touchStartDist = 0;
+      });
+
+      // Desktop: Double Click Zoom/Reset
+      container.addEventListener('dblclick', () => {
+        if (imgPreview.style.display === 'none') return;
+        if (scale > 1) {
+          resetTransformSmooth();
+        } else {
+          imgPreview.style.transition = 'transform 0.25s ease-out';
+          scale = 2.5;
+          posX = 0;
+          posY = 0;
+          updateTransform();
+          setTimeout(() => {
+            imgPreview.style.transition = '';
+          }, 250);
+        }
+      });
+      // ===== /Responsive Zoom + Pan =====
+
+      // Восстанавливаем изображение из localStorage при загрузке страницы
+      const savedImage = localStorage.getItem('uploadedImage');
+      if (savedImage) {
+        imgPreview.src = savedImage;
+        imgPreview.style.display = 'block'; // Показываем изображение
+        uploadLabel.style.display = 'none'; // Скрываем кнопку
+        resetTransform();
+      }
+      
+
+      // Обработчик загрузки файла
+      fileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            imgPreview.src = e.target.result;
+            imgPreview.style.display = 'block'; // Показываем изображение
+            uploadLabel.style.display = 'none'; // Скрываем кнопку
+
+            // Сохраняем изображение в localStorage
+            localStorage.setItem('uploadedImage', e.target.result);
+          };
+          reader.readAsDataURL(file); // Чтение файла в формате base64
+        }
+      });
+
+      // Открыть модальное окно с QR при нажатии "Предъявить документ"
+      if (presentButton && qrOverlay) {
+        presentButton.addEventListener('click', function () {
+          // показать индикатор загрузки
+          if (qrLoading) {
+            qrLoading.classList.add('qr-loading--visible');
+          }
+
+          // генерируем код и QR при каждом открытии
+          const randomCode = Math.floor(100000 + Math.random() * 900000).toString();
+          if (qrCodeValue) {
+            qrCodeValue.textContent = randomCode;
+          }
+          if (qrImage) {
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(randomCode)}`;
+            qrImage.src = qrUrl;
+            qrImage.alt = `QR ${randomCode}`;
+          }
+
+          // небольшая имитация загрузки перед открытием листа
+          setTimeout(() => {
+            if (qrLoading) {
+              qrLoading.classList.remove('qr-loading--visible');
+            }
+            qrOverlay.classList.add('qr-modal--visible');
+          }, 700);
+        });
+      }
+
+      // Закрыть модальное окно по крестику
+      if (qrClose && qrOverlay) {
+        qrClose.addEventListener('click', function () {
+          qrOverlay.classList.remove('qr-modal--visible');
+          if (qrLoading) {
+            qrLoading.classList.remove('qr-loading--visible');
+          }
+        });
+      }
+
+      // Закрыть модальное окно по нажатию на затемнённый фон
+      if (qrOverlay) {
+        qrOverlay.addEventListener('click', function (event) {
+          if (event.target === qrOverlay) {
+            qrOverlay.classList.remove('qr-modal--visible');
+            if (qrLoading) {
+              qrLoading.classList.remove('qr-loading--visible');
+            }
+          }
+        });
+      }
+    });
+  </script>
+
+  <body>
+    <div class="main-container">
+      <div class="flex-row-a">
+        <a href="mindex.html" class="chevron-left"><div class="vector"></div></a>
+        <div class="my-bank">
+          <span class="udostoverenie">Удостоверение личности</span>
+        </div>
+      </div>
+      <div class="slider">
+        <div class="rectangle"></div>
+        <button class="button-rectangle"></button>
+        <div class="button-documents">Документы</div>
+        <a href="rindex.html" class="span-requisites">Реквизиты</a>
+      </div>
+      <div class="ready-made">
+        <div class="img-prewiev" id="img-container">
+          <img alt="Описание изображения" class="idimg" style="display: none; cursor: zoom-in;" />
+          <label id="upload-label" for="img-upl" style="cursor: pointer;">Загрузить документ</label>
+          <input type="file" id="img-upl" style="display: none;" />
+        </div>
+        <div class="bottom-actions">
+          <div class="present">
+            <div class="present-document">
+              <img src="scan-qr-500.svg" alt="" class="present-icon" />
+              <span>Предъявить документ</span>
+            </div>
+          </div>
+          <div class="present1">
+            <span class="present1-document">
+              <img src="logout-500.svg" alt="" class="present1-icon" />
+              <span>Отправить документ</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Индикатор загрузки -->
+      <div class="qr-loading" id="qr-loading">
+        <div class="qr-spinner"></div>
+      </div>
+
+      <!-- Нижнее модальное окно с QR-кодом -->
+      <div class="qr-modal-overlay" id="qr-modal">
+        <div class="qr-modal">
+          <div class="qr-modal-handle"></div>
+          <div class="qr-header">
+            <h2 class="qr-title">Удостоверение личности</h2>
+            <button class="qr-close" aria-label="Закрыть окно">&times;</button>
+          </div>
+          <p class="qr-subtitle">Покажите QR-код сотруднику</p>
+          <div class="qr-code-box">
+            <img id="qr-image" src="" alt="QR" />
+          </div>
+          <p class="qr-text-small">или скажите код</p>
+          <div class="qr-code-value">------</div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+
+</html>
