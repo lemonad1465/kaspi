@@ -1,16 +1,12 @@
-/* Requisites specific styles */
 
-.slider {
-  margin-top: 25px !important;
-}
 
 /* Tab styling overrides for active Requisites tab */
 .tab-link-docs {
   position: absolute;
-  width: 160px;
-  height: 17px;
-  top: 7px;
-  left: 20px;
+  width: 50%;
+  height: 100%;
+  top: 0;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,23 +20,23 @@
 
 .button-rectangle-reqs {
   position: absolute;
-  width: 169px;
+  width: calc(50% - 2px);
   height: 30px;
   top: 1px;
-  left: 187px; /* Shift to the right */
+  left: calc(50% + 1px);
   background: #ffffff;
   border: none;
   z-index: 6;
   border-radius: 7px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .tab-text-reqs {
   position: absolute;
-  width: 160px;
-  height: 17px;
-  top: 7px;
-  left: 191px;
+  width: 50%;
+  height: 100%;
+  top: 0;
+  left: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,42 +117,7 @@
   background-color: rgba(254, 52, 32, 0.08);
 }
 
-/* Bottom actions container */
-.bottom-actions {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: 390px;
-  margin: 0 auto;
-  padding: 16px;
-  background: #ffffff;
-  border-top: 1px solid #f0f0f0;
-  z-index: 10;
-}
 
-.share-btn-container {
-  width: 100%;
-}
-
-.btn-share {
-  width: 100%;
-  height: 48px;
-  background-color: #fe3420; /* Signature Kaspi Red */
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  box-shadow: 0 4px 12px rgba(254, 52, 32, 0.2);
-}
-
-.btn-share:active {
-  background-color: #d12c1b;
-}
 
 /* Toast notification */
 .toast {
